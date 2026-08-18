@@ -1,17 +1,18 @@
 use macroquad::prelude::*;
+use crate::engine::Engine;
 
-pub struct Game;
+pub struct Game {
+    engine: Engine,
+}
 
 impl Game {
     pub fn new() -> Self {
-        Self
+        Self { engine: Engine::new()}
     }
 
-    pub async fn start(&self) {
+    pub async fn start(&mut self) {
         loop {
-            clear_background(WHITE);
-            draw_text("gvh", 20.0, 40.0, 30.0, GRAY);
-
+            self.engine.draw();
             next_frame().await;
         }
     }

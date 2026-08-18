@@ -1,10 +1,11 @@
 use crate::game::Game;
 
-pub mod game;
+mod game;
+mod engine;
 
 #[macroquad::main("gvh")]
 async fn main() {
-    let g = Game::new();
+    let mut g = Game::new();
     g.start().await;
 }
 
