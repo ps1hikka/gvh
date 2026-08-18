@@ -2,7 +2,6 @@ use hecs::World;
 use macroquad::prelude::{clear_background, GRAY, WHITE};
 use renderer::{RenderQueue, Renderer};
 use crate::engine::components::{Text, Transform};
-use crate::engine::systems::collect_texts;
 
 pub(crate) mod renderer;
 pub mod systems;
@@ -36,7 +35,7 @@ impl Engine {
         clear_background(WHITE);
 
         let mut queue = RenderQueue::default();
-        collect_texts(&self.world, &mut queue);
+        systems::collect_texts(&self.world, &mut queue);
 
         self.renderer.draw(&mut queue);
     }
