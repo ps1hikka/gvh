@@ -1,0 +1,21 @@
+# Cargo / Rust
+/target/
+**/*.rs.bk
+*.pdb
+
+# JetBrains / RustRover
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Локальные конфиги и секреты
+.env
+.env.*
+!.env.example
