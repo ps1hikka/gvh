@@ -1,14 +1,33 @@
-use macroquad::prelude::{clear_background, WHITE};
-use renderer::{RenderQueue, Renderer, TextDraw};
-mod renderer;
+use hecs::World;
+use macroquad::prelude::{clear_background, GRAY, WHITE};
+use renderer::{RenderQueue, Renderer};
+use crate::engine::components::{Text, Transform};
+use crate::engine::systems::collect_texts;
+
+pub(crate) mod renderer;
+pub mod systems;
+mod components;
 
 pub struct Engine {
-    renderer: Renderer,
+    world: World,
+    renderer: Renderer
 }
 
 impl Engine {
     pub fn new() -> Self {
+        let mut world = World::new();
+
+        world.spawn((
+            Transform { x: 20.0, y: 40.0 },
+            Text {
+                content: "gvh".to_string(),
+                size: 30.0,
+                color: GRAY,
+            },
+        ));
+
         Self {
+            world,
             renderer: Renderer::new(),
         }
     }
@@ -17,14 +36,7 @@ impl Engine {
         clear_background(WHITE);
 
         let mut queue = RenderQueue::default();
-
-        queue.world_texts.push(TextDraw {
-            content: "gvh".to_string(),
-            x: 20.0,
-            y: 40.0,
-            size: 30.0,
-            color: macroquad::prelude::GRAY,
-        });
+        collect_texts(&self.world, &mut queue);
 
         self.renderer.draw(&mut queue);
     }
