@@ -1,23 +1,37 @@
 mod queue;
 
-pub use queue::{RenderQueue, TextDraw, RectDraw};
+pub use queue::{RectDraw, RenderQueue, TextDraw};
 
-use crate::engine::assets::Assets;
-use macroquad::prelude::{TextParams, draw_rectangle, draw_rectangle_lines, draw_text_ex};
+use crate::engine::assets::{Assets, ShaderId};
+use macroquad::prelude::*;
 
-pub struct Renderer {}
+pub struct Renderer;
 
 impl Renderer {
     pub fn new() -> Self {
-        Self {}
+        Self
     }
 
     pub fn draw(&mut self, queue: &RenderQueue, assets: &Assets) {
         for r in &queue.rects {
-            if r.fill {
+            let use_shader = r.shader != ShaderId::None;
+            if use_shader {
+                if let Some(mat) = assets.material(r.shader) {
+                    mat.set_uniform("time", get_time() as f32);
+                    mat.set_uniform("thickness", r.thickness);
+                    mat.set_uniform("pulse", r.pulse);
+                    gl_use_material(mat);
+                }
+            }
+
+            if use_shader || r.fill {
                 draw_rectangle(r.x, r.y, r.w, r.h, r.color);
             } else {
                 draw_rectangle_lines(r.x, r.y, r.w, r.h, r.thickness, r.color);
+            }
+
+            if use_shader {
+                gl_use_default_material();
             }
         }
 

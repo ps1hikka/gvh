@@ -1,5 +1,5 @@
 use crate::engine::RenderQueue;
-use crate::engine::assets::{Assets, FontId, SfxId};
+use crate::engine::assets::{Assets, FontId, SfxId, ShaderId};
 use crate::engine::renderer::{RectDraw, TextDraw};
 use crate::engine::ui::{FlexItem, Rect};
 use macroquad::prelude::*;
@@ -9,6 +9,7 @@ pub struct Button {
     pub label: String,
     pub hovered: bool,
     pub font: FontId,
+    pub shader: ShaderId,
 }
 
 impl Button {
@@ -18,7 +19,13 @@ impl Button {
             label: label.to_string(),
             hovered: false,
             font: FontId::Ui,
+            shader: ShaderId::None,
         }
+    }
+
+    pub fn with_shader(mut self, shader: ShaderId) -> Self {
+        self.shader = shader;
+        self
     }
 
     pub fn rect(&self) -> Rect {
@@ -49,6 +56,9 @@ impl Button {
             color,
             fill: false,
             thickness: 2.0,
+            shader: self.shader,
+            pulse: if self.hovered { 1.0 } else { 0.0 },
+            ..Default::default()
         });
 
         queue.world_texts.push(TextDraw {
@@ -58,6 +68,7 @@ impl Button {
             size: 24.0,
             color,
             font: self.font,
+            ..Default::default()
         });
     }
 }

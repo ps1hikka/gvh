@@ -1,6 +1,7 @@
+use crate::engine::assets::{FontId, ShaderId};
 use macroquad::prelude::Color;
-use crate::engine::assets::FontId;
 
+#[derive(Default)]
 pub struct TextDraw {
     pub content: String,
     pub x: f32,
@@ -10,6 +11,7 @@ pub struct TextDraw {
     pub font: FontId,
 }
 
+#[derive(Default)]
 pub struct RectDraw {
     pub x: f32,
     pub y: f32,
@@ -18,6 +20,8 @@ pub struct RectDraw {
     pub color: Color,
     pub fill: bool,
     pub thickness: f32,
+    pub shader: ShaderId,
+    pub pulse: f32,
 }
 
 #[derive(Default)]

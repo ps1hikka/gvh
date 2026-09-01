@@ -1,3 +1,4 @@
+use crate::engine::assets::ShaderId;
 use crate::engine::ui::{Align, FlexDirection, FlexPanel, FlexStyle, Rect};
 use crate::engine::{Engine, RenderQueue};
 use crate::game::flow::FlowEvent;
@@ -22,7 +23,7 @@ impl MenuScene {
 
         Self {
             panel: FlexPanel::new(style),
-            start: Button::new("Начать", 220.0, 48.0),
+            start: Button::new("Начать", 220.0, 48.0).with_shader(ShaderId::Outline),
             quit: Button::new("Выход", 220.0, 48.0),
         }
     }
