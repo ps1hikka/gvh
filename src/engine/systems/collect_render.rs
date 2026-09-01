@@ -1,5 +1,5 @@
 use hecs::World;
-
+use crate::engine::assets::FontId;
 use crate::engine::components::{Text, Transform};
 use crate::engine::renderer::{RenderQueue, TextDraw};
 
@@ -11,6 +11,7 @@ pub fn collect_texts(world: &World, queue: &mut RenderQueue) {
             y: tf.y,
             size: text.size,
             color: text.color,
+            font: FontId::Ui,
         });
     }
 }

@@ -1,6 +1,7 @@
 mod flow;
 mod scene;
 mod scenes;
+mod ui;
 
 use crate::engine::{Engine, RenderQueue};
 use macroquad::prelude::*;
@@ -12,8 +13,8 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new() -> Self {
-        let mut engine = Engine::new();
+    pub async fn new() -> Self {
+        let mut engine = Engine::new().await;
         let mut scene = create(SceneId::Demo);
         scene.enter(&mut engine);
 
