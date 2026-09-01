@@ -39,7 +39,7 @@ impl DemoScene {
         systems::typewriter_system(&mut engine.world, dt);
 
         self.timer += dt;
-        if self.timer >= 2.0 {
+        if self.timer > 2.3 {
             FlowEvent::DemoFinished
         } else {
             FlowEvent::None
