@@ -1,10 +1,10 @@
+mod flow;
 mod scene;
 mod scenes;
 
 use crate::engine::{Engine, RenderQueue};
 use macroquad::prelude::*;
-use scene::{Scene, SceneCommand};
-use scenes::DemoScene;
+use scene::{Scene, SceneId};
 
 pub struct Game {
     engine: Engine,
@@ -14,12 +14,10 @@ pub struct Game {
 impl Game {
     pub fn new() -> Self {
         let mut engine = Engine::new();
-        let demo = DemoScene::new(&mut engine);
+        let mut scene = Scene::create(SceneId::Demo);
+        scene.enter(&mut engine);
 
-        Self {
-            engine,
-            scene: Scene::Demo(demo),
-        }
+        Self { engine, scene }
     }
 
     pub async fn start(&mut self) {
@@ -36,9 +34,18 @@ impl Game {
     }
 
     fn update(&mut self, dt: f32) {
-        match self.scene.update(&mut self.engine, dt) {
-            SceneCommand::None => {}
+        let event = self.scene.update(&mut self.engine, dt);
+
+        if let Some(id) = flow::handle(event) {
+            self.switch(id);
         }
+    }
+
+    fn switch(&mut self, id: SceneId) {
+        self.scene.exit(&mut self.engine);
+        let mut next = Scene::create(id);
+        next.enter(&mut self.engine);
+        self.scene = next;
     }
 
     fn draw(&mut self) {
