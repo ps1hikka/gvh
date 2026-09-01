@@ -1,5 +1,5 @@
 use crate::engine::RenderQueue;
-use crate::engine::assets::FontId;
+use crate::engine::assets::{Assets, FontId, SfxId};
 use crate::engine::renderer::{RectDraw, TextDraw};
 use crate::engine::ui::{FlexItem, Rect};
 use macroquad::prelude::*;
@@ -25,9 +25,15 @@ impl Button {
         self.item.computed
     }
 
-    pub fn update(&mut self) -> bool {
+    pub fn update(&mut self, assets: &Assets) -> bool {
         let (mx, my) = mouse_position();
-        self.hovered = self.rect().contains(mx, my);
+        let hovered = self.rect().contains(mx, my);
+
+        if hovered && !self.hovered {
+            crate::engine::audio::play(assets, SfxId::UiHover);
+        }
+
+        self.hovered = hovered;
         self.hovered && is_mouse_button_pressed(MouseButton::Left)
     }
 

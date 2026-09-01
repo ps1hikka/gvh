@@ -39,14 +39,14 @@ impl MenuScene {
 }
 
 impl Scene for MenuScene {
-    fn update(&mut self, _engine: &mut Engine, _dt: f32) -> FlowEvent {
+    fn update(&mut self, engine: &mut Engine, _dt: f32) -> FlowEvent {
         self.layout();
 
-        if self.start.update() {
+        if self.start.update(&engine.assets) {
             return FlowEvent::StartGame;
         }
-        if self.quit.update() {
-            std::process::exit(0);
+        if self.quit.update(&engine.assets) {
+            return FlowEvent::Quit;
         }
         FlowEvent::None
     }

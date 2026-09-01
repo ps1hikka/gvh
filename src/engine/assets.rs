@@ -1,3 +1,4 @@
+use macroquad::audio::{Sound, load_sound};
 use macroquad::prelude::*;
 use std::collections::HashMap;
 
@@ -8,8 +9,14 @@ pub enum FontId {
     Dialogue,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SfxId {
+    UiHover,
+}
+
 pub struct Assets {
     fonts: HashMap<FontId, Font>,
+    sounds: HashMap<SfxId, Sound>,
 }
 
 impl Assets {
@@ -31,10 +38,20 @@ impl Assets {
                 .await
                 .unwrap(),
         );
-        Self { fonts }
+
+        let mut sounds = HashMap::new();
+        sounds.insert(
+            SfxId::UiHover,
+            load_sound("assets/sfx/ui_hover.ogg").await.unwrap(),
+        );
+        Self { fonts, sounds }
     }
 
     pub fn font(&self, id: FontId) -> &Font {
         &self.fonts[&id]
+    }
+
+    pub fn sound(&self, id: SfxId) -> &Sound {
+        &self.sounds[&id]
     }
 }

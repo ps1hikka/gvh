@@ -6,6 +6,7 @@ pub mod components;
 pub(crate) mod renderer;
 pub mod systems;
 pub mod ui;
+pub(crate) mod audio;
 
 use crate::engine::assets::Assets;
 pub use components::{Text, Transform, Typewriter};
@@ -13,7 +14,7 @@ pub use components::{Text, Transform, Typewriter};
 pub struct Engine {
     pub world: World,
     renderer: Renderer,
-    assets: Assets,
+    pub(crate) assets: Assets,
 }
 
 impl Engine {
