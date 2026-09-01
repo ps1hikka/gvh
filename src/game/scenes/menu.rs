@@ -1,6 +1,7 @@
 use crate::engine::renderer::TextDraw;
 use crate::engine::{Engine, RenderQueue};
 use crate::game::flow::FlowEvent;
+use crate::game::scene::Scene;
 use macroquad::prelude::*;
 
 pub struct MenuScene;
@@ -9,18 +10,18 @@ impl MenuScene {
     pub fn new() -> Self {
         Self
     }
+}
 
-    pub fn enter(&mut self, _engine: &mut Engine) {}
-    pub fn exit(&mut self, _engine: &mut Engine) {}
-
-    pub fn update(&mut self, _engine: &mut Engine, _dt: f32) -> FlowEvent {
+impl Scene for MenuScene {
+    fn update(&mut self, _engine: &mut Engine, _dt: f32) -> FlowEvent {
         if is_key_pressed(KeyCode::Enter) {
-            return FlowEvent::StartGame;
+            FlowEvent::StartGame
+        } else {
+            FlowEvent::None
         }
-        FlowEvent::None
     }
 
-    pub fn draw(&self, _engine: &Engine, queue: &mut RenderQueue) {
+    fn draw(&self, _engine: &Engine, queue: &mut RenderQueue) {
         queue.world_texts.push(TextDraw {
             content: "MENU".into(),
             x: 40.0,

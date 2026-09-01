@@ -4,17 +4,17 @@ mod scenes;
 
 use crate::engine::{Engine, RenderQueue};
 use macroquad::prelude::*;
-use scene::{Scene, SceneId};
+use scene::{Scene, SceneId, create};
 
 pub struct Game {
     engine: Engine,
-    scene: Scene,
+    scene: Box<dyn Scene>,
 }
 
 impl Game {
     pub fn new() -> Self {
         let mut engine = Engine::new();
-        let mut scene = Scene::create(SceneId::Demo);
+        let mut scene = create(SceneId::Demo);
         scene.enter(&mut engine);
 
         Self { engine, scene }
@@ -43,7 +43,7 @@ impl Game {
 
     fn switch(&mut self, id: SceneId) {
         self.scene.exit(&mut self.engine);
-        let mut next = Scene::create(id);
+        let mut next = create(id);
         next.enter(&mut self.engine);
         self.scene = next;
     }
